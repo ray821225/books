@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import BookEdit from "./BookEdit";
 import useBooksContext from "../hooks/useContext";
 
-const BookShow = ({ book }) => {
+const BookShow = ({ book, index }) => {
   const [showBookEdit, setShowBookEdit] = useState(false);
 
-  const { delBook } = useBooksContext();
+  const { delBook, books, setBooks } = useBooksContext();
+
+  const dragItem = useRef(null);
+  const dragOverItem = useRef(null);
 
   const handleSubmit = () => {
     setShowBookEdit(false);
@@ -17,8 +20,38 @@ const BookShow = ({ book }) => {
     content = <BookEdit book={book} onSubmit={handleSubmit} />;
   }
 
+  const handleSort = () => {
+    console.log("innn sort");
+    let booksItem = [...books];
+
+    const draggedItem = booksItem.splice(dragItem.current, 1)[0];
+
+    console.log(draggedItem, "draggedItem");
+    console.log(dragItem.current, "dragItem.current");
+    console.log(dragOverItem.current, "dragOverItem.current");
+
+    booksItem.splice(dragOverItem.current, 0, draggedItem);
+
+    // dragItem.current = null;
+    // dragOverItem.current = null;
+
+    console.log(booksItem, "booksItem");
+
+    // setBooks(booksItem);
+  };
+
   return (
-    <div className="book-show">
+    <div
+      className="book-show"
+      draggable
+      onDragStart={(e) => {
+        dragItem.current = index;
+      }}
+      onDragEnter={(e) => {
+        dragOverItem.current = index;
+      }}
+      onDragEnd={handleSort}
+    >
       <img alt="books" src={`https://picsum.photos/seed/${book.id}/300/200`} />
       <div>{content}</div>
       <div className="actions">

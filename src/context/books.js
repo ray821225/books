@@ -49,6 +49,7 @@ function Provider({ children }) {
     createBook,
     editBook,
     delBook,
+    setBooks,
   };
 
   return (
