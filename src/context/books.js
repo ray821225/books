@@ -43,6 +43,18 @@ function Provider({ children }) {
     setBooks(updatedBook);
   };
 
+  const changeBookSort = async (startId, endId) => {
+    console.log(startId, endId);
+    const response = await axios.post(
+      // `http://localhost:3001/books/${startId}`,
+      `http://localhost:3001/books/moveItem/${startId}/${endId}`
+    );
+
+    console.log(response, "res");
+
+    setBooks(response.data);
+  };
+
   const valueToShare = {
     books,
     fetchBooks,
@@ -50,6 +62,7 @@ function Provider({ children }) {
     editBook,
     delBook,
     setBooks,
+    changeBookSort,
   };
 
   return (

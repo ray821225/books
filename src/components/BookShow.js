@@ -2,13 +2,10 @@ import { useState, useRef } from "react";
 import BookEdit from "./BookEdit";
 import useBooksContext from "../hooks/useContext";
 
-const BookShow = ({ book, index }) => {
+const BookShow = ({ book, index, dragItem, dragOverItem }) => {
   const [showBookEdit, setShowBookEdit] = useState(false);
 
-  const { delBook, books, setBooks } = useBooksContext();
-
-  const dragItem = useRef(null);
-  const dragOverItem = useRef(null);
+  const { delBook, books, setBooks, changeBookSort } = useBooksContext();
 
   const handleSubmit = () => {
     setShowBookEdit(false);
@@ -22,20 +19,18 @@ const BookShow = ({ book, index }) => {
 
   const handleSort = () => {
     console.log("innn sort");
-    let booksItem = [...books];
 
-    const draggedItem = booksItem.splice(dragItem.current, 1)[0];
+    changeBookSort(dragItem.current, dragOverItem.current);
+    // let booksItem = [...books];
 
-    console.log(draggedItem, "draggedItem");
-    console.log(dragItem.current, "dragItem.current");
-    console.log(dragOverItem.current, "dragOverItem.current");
+    // const draggedItem = booksItem.splice(dragItem.current, 1)[0];
 
-    booksItem.splice(dragOverItem.current, 0, draggedItem);
+    // booksItem.splice(dragOverItem.current, 0, draggedItem);
 
     // dragItem.current = null;
     // dragOverItem.current = null;
 
-    console.log(booksItem, "booksItem");
+    // console.log(booksItem, "booksItem");
 
     // setBooks(booksItem);
   };
